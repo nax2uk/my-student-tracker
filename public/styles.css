@@ -1,0 +1,50 @@
+
+  .container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.app{
+  text-align:center;
+  display:grid;
+  grid-template-columns: 1fr 8fr;
+  grid-template-rows:100px auto 50px;
+  grid-template-areas:
+  "header header"
+  "sideBar mainContent"
+  "footer footer"
+}
+
+header{
+  grid-area: header;
+}
+
+nav {
+  grid-area: sideBar;
+}
+nav ul {
+    list-style-type: none;
+}
+
+main {
+  text-align: left;
+  grid-area: mainContent;
+}
+
+footer {
+  grid-area: footer;
+}
+
+.welcome{
+  text-align: center;
+}
+
+.students{
+  margin-left: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 1px;
+}
+
