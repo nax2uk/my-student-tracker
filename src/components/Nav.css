@@ -1,0 +1,16 @@
+.nav ul, li{
+   font-family: Montserrat;
+  font-size:16px;
+  list-style-type: disc;
+  text-align:left;
+  margin-left:5px;
+  padding-left:0;
+}
+
+nav ul li ul{
+  color:red;
+  list-style-type: square;
+  margin-left:20px;
+  padding-left:0;
+
+}

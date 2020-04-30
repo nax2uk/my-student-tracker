@@ -16,7 +16,7 @@ const Main = () => {
         <Block path='/blocks' />
         <SingleBlock path='/blocks/:_id' />
         <Students path='/students/block/:slug' />
-
+        <Students path='/students/graduated/:graduated' />
       </Router>
     </main>
   );
