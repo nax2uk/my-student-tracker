@@ -1,3 +1,7 @@
+// jest will lookf or:
+// __test__ <--- folder
+// spec <---- folder
+// any file with *.test.js
 
 const getStringCurrentBlock = (slug) => {
   if (slug === 'fun') return 'Fundamentals';
