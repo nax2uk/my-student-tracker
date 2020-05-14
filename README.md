@@ -36,7 +36,7 @@ Install required packages and dependencies
 npm install
 ```
 
-Start northcoders-news app
+Start my-student-tracker app
 ```bash
 npm start
 ```
