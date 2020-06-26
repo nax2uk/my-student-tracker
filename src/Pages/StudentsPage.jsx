@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios'
-import { Link } from '@reach/router'
+import axios from 'axios';
+import { Link } from '@reach/router';
 import getStringCurrentBlock from '../utils/getStringCurrentBlock'
 import SortByOption from '../components/SortByOption';
 import Header from '../Navs/Header';
+import Loader from '../components/Loader';
 
 class StudentsPage extends Component {
   state = {
@@ -101,7 +102,7 @@ class StudentsPage extends Component {
 
   render() {
     const { students, isLoading, titleHeader } = this.state;
-    if (isLoading) return <p>Is Loading ..</p>;
+    if (isLoading) return <Loader />;
     else {
       return (<>
         <Header headerHome={false} headerTitle={titleHeader} />

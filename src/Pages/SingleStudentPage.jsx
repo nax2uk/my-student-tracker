@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../Navs/Header';
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 class SingleStudentPage extends Component {
   state = {
@@ -26,7 +27,7 @@ class SingleStudentPage extends Component {
   render() {
 
     const { isLoading, student } = this.state;
-    if (isLoading) return <p>isLoading</p>
+    if (isLoading) return <Loader />
     else {
       return (<>
         <Header headerHome={false} headerTitle={student.name} />
