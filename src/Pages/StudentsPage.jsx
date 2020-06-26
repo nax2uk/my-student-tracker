@@ -15,7 +15,6 @@ class StudentsPage extends Component {
     err: ""
   }
 
-
   /** GET STUDENTS TO DISPLAY IN TABLE **/
   fetchStudents = ({ sort_by }) => {
     api
@@ -26,7 +25,7 @@ class StudentsPage extends Component {
       .catch(err => {
         this.setState({
           isLoading: false,
-          err: { status: err.response.status, msg: err.response.data.msg }
+          err: { status: err.response.status, msg: err.response.data.message }
         });
       })
   }
@@ -44,20 +43,24 @@ class StudentsPage extends Component {
     this.setState({ err: { status: status, msg: msg } });
   }
 
+  /** TITLE FOR HEADER **/
+  fetchTitleHeader = () => {
+    const { graduated, slug } = this.props;
+    if ((graduated === undefined) && (slug === undefined)) {
+      this.setState({ titleHeader: "All Students" });
+    }
+    else if (slug === "grad") {
+      this.setState({ titleHeader: "Past Students" });
+    }
+    else if (graduated || (slug === "fun" || "fe" || "be" || "proj")) {
+      this.setState({ titleHeader: "Current Students" });
+    }
+  }
+
   /** REACT LIFECYCLE **/
   componentDidMount() {
     this.fetchStudents({});
-    if ((this.props.graduated === undefined) && (this.props.slug === undefined)) {
-      this.setState({ titleHeader: "All Students" });
-    }
-    else if (this.props.slug === "grad") {
-      this.setState({ titleHeader: "Past Students" });
-    }
-    else if (this.props.graduated || (this.props.slug === "fun" || "fe" || "be" || "proj")) {
-      console.log(this.props.slug, this.props.graduated);
-
-      this.setState({ titleHeader: "Current Students" });
-    }
+    this.fetchTitleHeader();
   }
 
   componentDidUpdate(prevProps) {

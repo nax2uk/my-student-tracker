@@ -24,7 +24,7 @@ class SingleStudentPage extends Component {
         this.setState({ student: student, isLoading: false });
       })
       .catch(err => {
-        this.setState({ err: { status: err.response.status, msg: err.response.data.msg }, isLoading: false });
+        this.setState({ err: { status: err.response.status, msg: err.response.data.message }, isLoading: false });
       });
   }
 

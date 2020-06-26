@@ -61,7 +61,6 @@ text-align: center;
     background: transparent;
 }
 
-
 .navbar a, .navmenu a {
     color: #fff;
     padding: 8px 12px;
@@ -139,6 +138,7 @@ text-align: center;
     background: url('../images/home/header.jpg') no-repeat center center/cover;
     height: 30vh;
 }
+
 /* FORM*/
 form {
   width: 85%;
@@ -156,6 +156,7 @@ form input {
    border-radius: 5px;
    outline:none;
 }
+
 form label {
     display:inline-block;
     width: 30%;
@@ -166,7 +167,6 @@ form button {
     margin:5px;
 }
 
-
 /* SELECT */
 select {
  height: 40px;
@@ -174,8 +174,6 @@ select {
  margin:10px;
  padding:5px;
 }
-
-
 
 /* TABLE */
 table {

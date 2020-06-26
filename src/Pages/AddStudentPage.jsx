@@ -11,7 +11,6 @@ class AddStudentPage extends Component {
     err: ""
   }
 
-
   addStudent = () => {
     const { name, startingCohort } = this.state;
     api
@@ -65,7 +64,6 @@ class AddStudentPage extends Component {
           </div>
         </main>
       </>
-
     );
   }
 }
