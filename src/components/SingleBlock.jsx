@@ -8,7 +8,6 @@ class SingleBlock extends Component {
   }
 
   componentDidMount() {
-
     this.fetchSingleStudent();
   }
 
@@ -17,7 +16,6 @@ class SingleBlock extends Component {
     axios
       .get(`https://nc-student-tracker.herokuapp.com/api/blocks/${_id}`)
       .then(response => {
-        //console.log(response);
         this.setState({ block: response.data.block, isLoading: false })
       })
   }

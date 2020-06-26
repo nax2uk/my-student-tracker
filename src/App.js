@@ -1,19 +1,31 @@
 import React from 'react';
-import Header from './components/Header'
-import Main from './components/Main'
-import Nav from './components/Nav'
-import Footer from './components/Footer'
-import './App.css'
+import { Router } from '@reach/router'
+import HomePage from './Pages/HomePage'
+import Students from './Pages/StudentsPage'
+import SingleStudent from './Pages/SingleStudentPage'
+import Footer from './Navs/Footer'
+import AddStudentPage from './Pages/AddStudentPage';
 
-function App() {
+
+const App = () => {
   return (
-    <div className="app">
-      <Header />
-      <Nav />
-      <Main />
+    <>
+      <Router>
+        <HomePage path='/' />
+        { /* All Students Page */}
+        <Students path='/students' />
+        {/* Student Details Page */}
+        <SingleStudent path='/students/:_id' />
+        {/* Current Student in a specific block Page  */}
+        <Students path='/students/block/:slug' />
+        {/* Current Student Page */}
+        <Students path='/students/graduated/:graduated' />
+        {/* Add Student Page */}
+        <AddStudentPage path='/addstudent' />
+      </Router>
       <Footer />
-    </div>
+    </>
   );
-}
+};
 
 export default App;

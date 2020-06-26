@@ -1,10 +1,8 @@
 import React from 'react';
-
+import Header from '../Navs/Header';
 const HomePage = () => {
   return (
-    <div className="welcome">
-      Welcome to the Northcoders Student Tracker
-    </div>
+    <Header headerHome={true} />
   );
 };
 

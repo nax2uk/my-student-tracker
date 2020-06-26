@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Header from '../Navs/Header';
 import axios from 'axios';
 
-class SingleStudent extends Component {
+class SingleStudentPage extends Component {
   state = {
     student: {},
     curr_block: 0,
@@ -18,7 +19,6 @@ class SingleStudent extends Component {
     axios
       .get(`https://nc-student-tracker.herokuapp.com/api/students/${_id}`)
       .then(response => {
-        //console.log(response);
         this.setState({ student: response.data.student, isLoading: false })
       })
   }
@@ -28,15 +28,21 @@ class SingleStudent extends Component {
     const { isLoading, student } = this.state;
     if (isLoading) return <p>isLoading</p>
     else {
-      return (
-        <div className="students-single">
-          <h2>{student.name}</h2>
-          <p>Current Block: {student.blockHistory[student.blockHistory.length - 1].name}</p>
-          <p>Starting Cohort: {student.startingCohort}</p>
-        </div>
+      return (<>
+        <Header headerHome={false} headerTitle={student.name} />
+        <main>
+          <section className="post">
+            <h2>{student.name}</h2>
+            <p>Current Block: {student.blockHistory[student.blockHistory.length - 1].name}</p>
+            <p>Starting Cohort: {student.startingCohort}</p>
+            <br />
+            <br />
+          </section>
+        </main>
+      </>
       );
     }
   }
 }
 
-export default SingleStudent;
+export default SingleStudentPage;
