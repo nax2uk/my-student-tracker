@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
 import Header from '../Navs/Header';
-import axios from 'axios';
+import * as api from '../utils/api';
 import Loader from '../components/Loader';
 
 class SingleStudentPage extends Component {
   state = {
     student: {},
     curr_block: 0,
-    isLoading: true
+    isLoading: true,
+    err: ""
   }
 
   componentDidMount() {
-
     this.fetchSingleStudent();
   }
 
+
   fetchSingleStudent = () => {
     const { _id } = this.props
-    axios
-      .get(`https://nc-student-tracker.herokuapp.com/api/students/${_id}`)
-      .then(response => {
-        this.setState({ student: response.data.student, isLoading: false })
+    api
+      .getSingleStudent(_id)
+      .then(({ student }) => {
+        this.setState({ student: student, isLoading: false });
       })
+      .catch(err => {
+        this.setState({ err: { status: err.response.status, msg: err.response.data.msg }, isLoading: false });
+      });
   }
 
   render() {

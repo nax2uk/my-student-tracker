@@ -5,6 +5,7 @@
 }
 
 body {
+    font-size: medium;
     font-family: 'Open Sans', sans-serif;
     background: #fff;
     color: #333;
@@ -140,21 +141,29 @@ text-align: center;
 }
 /* FORM*/
 form {
-  width: 100%;
-  padding: 15px;
+  width: 85%;
+  padding: 30px;
+  text-align:right;
 }
 
 form input {
+   display: inline-block;
    position:  relative;
-   width:85%;
+   width:60%;
    border: 1px solid #000;
    padding: 5px;
    margin: 5px;
    border-radius: 5px;
    outline:none;
 }
-label {
-    font-size:20px;
+form label {
+    display:inline-block;
+    width: 30%;
+    margin:5px;
+}
+
+form button {
+    margin:5px;
 }
 
 
@@ -166,10 +175,7 @@ select {
  padding:5px;
 }
 
-.sort-by{
-  font-size:14px;
-  margin-left: 25px;
-}
+
 
 /* TABLE */
 table {
@@ -259,9 +265,10 @@ table .td-label{
 
 .post .meta {
     margin-bottom: 30px;
+    margin-left: 20px;
+    font-size:14px;
+
 }
-
-
 
 /* Footer */
 .footer {
@@ -287,9 +294,7 @@ table .td-label{
 
 
 @media(max-width: 992px) {
-    .body {
-        font-size: large;
-    }
+
     .navbar, .navmenu {
         flex-direction: column;
         height: 120px;
@@ -328,13 +333,9 @@ table .td-label{
         margin-top:18vh;
         font-size: 40px;
     }
-    .container, .btn {
+    .container {
         font-size: medium;
         padding:7px;
-    }
-
-    label{
-        font-size: large;
     }
 
 }
@@ -383,11 +384,6 @@ table .td-label{
         font-size: small;
         padding:5px;
     }
-
-    label{
-        font-size: medium;
-    }
-
  
 }
 

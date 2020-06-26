@@ -1,18 +1,50 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Link } from '@reach/router';
-import getStringCurrentBlock from '../utils/getStringCurrentBlock'
+import TitlePage from '../components/TitlePage';
 import SortByOption from '../components/SortByOption';
 import Header from '../Navs/Header';
 import Loader from '../components/Loader';
+import ErrorPage from '../Pages/ErrorPage';
+import * as api from '../utils/api';
+import StudentsTable from '../components/StudentsTable';
 
 class StudentsPage extends Component {
   state = {
     isLoading: true,
     students: [],
-    titleHeader: ""
+    titleHeader: "",
+    err: ""
   }
 
+
+  /** GET STUDENTS TO DISPLAY IN TABLE **/
+  fetchStudents = ({ sort_by }) => {
+    api
+      .getAllStudents({ sort_by: sort_by, block: this.props.slug, graduated: this.props.graduated })
+      .then(({ students }) => {
+        this.setState({ students: students, isLoading: false })
+      })
+      .catch(err => {
+        this.setState({
+          isLoading: false,
+          err: { status: err.response.status, msg: err.response.data.msg }
+        });
+      })
+  }
+
+  /** DELETE STUDENT FROM STATE, USED WHEN GRADUATE/DELETE BUTTON IS CLICKED**/
+  removeStudentFromState = (id) => {
+    this.setState(currState => {
+      return ({ students: currState.students.filter(student => student._id !== id) })
+    })
+
+  }
+
+  /** SET ERROR STATE, USED WHEN GRADUATE/DELETE BUTTON IS CLICKED**/
+  setErrorState = (status, msg) => {
+    this.setState({ err: { status: status, msg: msg } });
+  }
+
+  /** REACT LIFECYCLE **/
   componentDidMount() {
     this.fetchStudents({});
     if ((this.props.graduated === undefined) && (this.props.slug === undefined)) {
@@ -26,7 +58,6 @@ class StudentsPage extends Component {
 
       this.setState({ titleHeader: "Current Students" });
     }
-
   }
 
   componentDidUpdate(prevProps) {
@@ -35,130 +66,38 @@ class StudentsPage extends Component {
     }
   }
 
-
-  fetchStudents = ({ sort_by }) => {
-
-    axios
-      .get('https://nc-student-tracker.herokuapp.com/api/students/', {
-        params: {
-          block: this.props.slug,
-          graduated: this.props.graduated,
-          sort_by: sort_by
-        }
-      })
-      .then(response => {
-        this.setState({ students: response.data.students, isLoading: false })
-      })
-  }
-
-  addStudent = (name, startingCohort) => {
-    axios
-      .post('https://nc-student-tracker.herokuapp.com/api/students/', {
-        name: name,
-        startingCohort: startingCohort
-      })
-      .then((response) => {
-        this.addStudentToState(response.data.student);
-      });
-
-  }
-
-  addStudentToState = (student) => {
-    this.setState(currState => {
-      return ({ students: [student, ...currState.students] });
-    })
-
-  }
-
-  deleteStudentFromState = (id) => {
-    this.setState(currState => {
-      return ({ students: currState.students.filter(student => student._id !== id) })
-    })
-
-  }
-  deleteStudent = (id) => {
-    axios
-      .delete(`https://nc-student-tracker.herokuapp.com/api/students/${id}`)
-      .then(() => {
-        this.deleteStudentFromState(id);
-      })
-  }
-
-  graduateStudent = (id) => {
-    axios
-      .patch(`https://nc-student-tracker.herokuapp.com/api/students/${id}?progress=true`)
-      .then(() => {
-        this.deleteStudentFromState(id);
-      })
-  }
-
-  handleGraduate = (event) => {
-    this.graduateStudent(event.target.id);
-  }
-
-  handleDelete = (event) => {
-    this.deleteStudent(event.target.id);
-  }
-
   render() {
-    const { students, isLoading, titleHeader } = this.state;
+    const { students, isLoading, titleHeader, err } = this.state;
+    const { slug, graduated } = this.props;
+
     if (isLoading) return <Loader />;
-    else {
-      return (<>
-        <Header headerHome={false} headerTitle={titleHeader} />
-        <main>
-          <section className="post">
-            {((this.props.graduated === undefined) && (this.props.slug === undefined)) &&
-              <h2>Students Past and Present : {students.length}</h2>}
-            {(this.props.slug) &&
-              <h2>{`${getStringCurrentBlock(students[0].currentBlock)} : ${students.length}`}</h2>}
+    else if (err) return <ErrorPage err={err} />
+    return (<>
+      <Header headerHome={false} headerTitle={titleHeader} />
+      <main>
+        <section className="post">
+          <TitlePage
+            students={students}
+            slug={slug}
+            graduated={graduated}
+          />
 
-            {(this.props.graduated) && <h2> All : {students.length} </h2>}
+          <SortByOption
+            fetchStudents={this.fetchStudents}
+          />
 
-            <div className="meta"><SortByOption fetchStudents={this.fetchStudents} /></div>
-            <div className="container">
+          <StudentsTable
+            students={students}
+            slug={slug}
+            graduated={graduated}
+            removeStudentFromState={this.removeStudentFromState}
+            setErrorState={this.setErrorState}
+          />
 
-
-              <table>
-                <thead>
-                  <tr>
-                    <th key="name">Student Name</th>
-                    <th key="cohort" className="align-center">Starting Cohort</th>
-                    <th key="block" className="align-left" colSpan="2">Current Block</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    students.map(({ _id, name, currentBlock, startingCohort }) => {
-                      return (
-                        <tr key={`${_id}`}>
-                          <td className="student-name">
-                            <Link to={`/students/${_id}`}>{`${name}`}</Link>
-                          </td>
-                          <td className="align-center">{startingCohort}</td>
-                          <td className="align-left">
-                            {getStringCurrentBlock(currentBlock)}
-                          </td>
-                          {(this.props.slug && this.props.slug !== 'grad') &&
-                            <td className='align-right'>
-                              <button className="btn" onClick={this.handleGraduate} id={`${_id}`}>Graduate!</button>
-                            </td>}
-                          {this.props.graduated &&
-                            <td className='align-right'>
-                              <button className="btn" onClick={this.handleDelete} id={`${_id}`}>Delete Student</button>
-                            </td>}
-                          {(this.props.slug === 'grad' || ((this.props.slug === undefined) && (this.props.graduated === undefined))) && <td></td>}
-
-                        </tr>);
-                    })
-                  }
-                </tbody></table>
-            </div>
-          </section>
-        </main>
-      </>
-      );
-    }
+        </section>
+      </main>
+    </>
+    );
   }
 }
 

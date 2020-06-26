@@ -1,10 +1,37 @@
 import React, { Component } from 'react';
 import Header from '../Navs/Header';
+import ErrorPage from '../Pages/ErrorPage';
+import * as api from '../utils/api';
 
 class AddStudentPage extends Component {
   state = {
     name: '',
-    startingCohort: ''
+    startingCohort: '',
+    msg: "",
+    err: ""
+  }
+
+
+  addStudent = () => {
+    const { name, startingCohort } = this.state;
+    api
+      .postStudent(name, startingCohort)
+      .then(({ student }) => {
+        this.setState({
+          msg: `${student.name} has been added to the system.`,
+          name: "",
+          startingCohort: ""
+        });
+      })
+      .catch(err => {
+        console.dir(err);
+        this.setState({ err: { status: err.response.status, msg: err.response.data.message } })
+      });
+  }
+
+  handleAddStudent = (event) => {
+    event.preventDefault();
+    this.addStudent();
   }
 
   handleChange = (event) => {
@@ -12,16 +39,9 @@ class AddStudentPage extends Component {
     this.setState({ [name]: value });
   }
 
-  handleAddStudent = (event) => {
-    event.preventDefault();
-    const { addStudent } = this.props;
-    const { name, startingCohort } = this.state;
-    addStudent(name, startingCohort);
-    this.setState({ name: '', startingCohort: '' });
-
-  }
   render() {
-    const { startingCohort, name } = this.state;
+    const { name, startingCohort, msg, err } = this.state;
+    if (err) return <ErrorPage err={err} />
     return (
       <>
         <Header headerHome={false} headerTitle="Add Student" />
@@ -30,30 +50,17 @@ class AddStudentPage extends Component {
             <h2>Add Student</h2>
             <div className="container">
               <form onSubmit={this.handleAddStudent}>
-                <table>
-                  <tr>
-                    <td className="td-label">
-                      <label>Name: </label>
-                    </td>
-                    <td className="align-right">
-                      <input name='name' value={name} onChange={this.handleChange} />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="td-label">
-                      <label>Starting Cohort: </label>
-                    </td>
-                    <td className="align-right">
-                      <input type="text" name="startingCohort" value={startingCohort} onChange={this.handleChange} />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" className="align-right">
-                      <button className="btn">Add Student</button>
-                    </td>
-                  </tr>
-                </table>
+                <label className="td-label">Name: </label>
+
+                <input className="td-label" name='name' value={name} onChange={this.handleChange} />
+
+                <label>Starting Cohort: </label>
+
+                <input type="text" name="startingCohort" value={startingCohort} onChange={this.handleChange} />
+
+                <button className="btn">Add Student</button>
               </form>
+              {msg && <p>{msg}</p>}
             </div>
           </div>
         </main>

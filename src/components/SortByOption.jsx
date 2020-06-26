@@ -3,14 +3,11 @@ import React from 'react';
 const SortByOption = (props) => {
 
   const handleSort = (event) => {
-
-    const { fetchStudents } = props;
-    fetchStudents({ sort_by: event.target.value });
-
+    props.fetchStudents({ sort_by: event.target.value });
   }
 
   return (
-    <div className="sort-by">
+    <div className="meta">
       <label>Sort By: </label>
       <select onChange={handleSort}>
         <option>Sort By</option>
