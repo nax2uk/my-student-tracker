@@ -50,3 +50,8 @@ npm start
 ## Authors
 
 * **Azlina Yeo** - *Initial work* - [nax2uk](https://github.com/nax2uk)
+
+## Changelog
+### 26 June 2020
+- Refactored code to add ErrorPage component
+- Redesigned the website to make it look more professional
