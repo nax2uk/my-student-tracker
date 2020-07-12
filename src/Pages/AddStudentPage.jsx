@@ -47,20 +47,17 @@ class AddStudentPage extends Component {
         <main>
           <div className="post">
             <h2>Add Student</h2>
-            <div className="container">
-              <form onSubmit={this.handleAddStudent}>
-                <label className="td-label">Name: </label>
+            <form onSubmit={this.handleAddStudent}>
 
-                <input className="td-label" name='name' value={name} onChange={this.handleChange} />
+              <label htmlFor='name'>Name: </label>
+              <input id='name' type='text' name='name' value={name} onChange={this.handleChange} />
 
-                <label>Starting Cohort: </label>
+              <label htmlFor='cohort'>Starting Cohort: </label>
+              <input id='cohort' type="text" name="startingCohort" value={startingCohort} onChange={this.handleChange} />
 
-                <input type="text" name="startingCohort" value={startingCohort} onChange={this.handleChange} />
-
-                <button className="btn">Add Student</button>
-              </form>
-              {msg && <p>{msg}</p>}
-            </div>
+              <button className="btn">Add Student</button>
+            </form>
+            {msg && <p>{msg}</p>}
           </div>
         </main>
       </>
